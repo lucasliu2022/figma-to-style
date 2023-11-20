@@ -1,5 +1,6 @@
 import { handleCss } from "@/utils/handleCss";
 import { useState, useEffect } from "react";
+import copytoclipboard from "copy-to-clipboard";
 
 export default function Home() {
   const [source, setSource] =
@@ -30,12 +31,23 @@ export default function Home() {
           }}
         />
       </div>
-      <div className="flex-1">
+      <div className="flex-1 relative">
         <textarea
           className="min-h-screen w-full border-2 p-2"
           value={result}
           readOnly
         />
+        <div className="absolute right-4 top-4">
+          <button
+            type="button"
+            onClick={() => {
+              copytoclipboard(result);
+            }}
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          >
+            Copy
+          </button>
+        </div>
       </div>
     </main>
   );
