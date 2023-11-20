@@ -13,6 +13,8 @@ export default function Home() {
 
   console.log(source);
 
+  const [result, setResult] = useState("");
+
   return (
     <main className="mx-auto flex max-w-7xl gap-3">
       <div className="flex-1">
@@ -21,11 +23,16 @@ export default function Home() {
           value={source}
           onChange={(e) => {
             setSource(e.target.value);
+            setResult(e.target.value);
           }}
         />
       </div>
       <div className="flex-1">
-        <textarea className="min-h-screen w-full border-2 p-2" />
+        <textarea
+          className="min-h-screen w-full border-2 p-2"
+          value={result}
+          readOnly
+        />
       </div>
     </main>
   );
