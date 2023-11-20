@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { handleCss } from "@/utils/handleCss";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const [source, setSource] =
@@ -11,7 +12,9 @@ export default function Home() {
   font-weight: 600;
   line-height: normal;`);
 
-  console.log(source);
+  useEffect(() => {
+    setResult(handleCss(source));
+  }, [source]);
 
   const [result, setResult] = useState("");
 
