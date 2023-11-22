@@ -12,10 +12,25 @@ export function cssParse(value: string) {
   root.walkDecls((decl) => {
     decl.prop = transformProp(decl.prop);
     if (isNaN(Number(decl.value))) {
+      decl.value = transformColor(decl.value);
       decl.value = "'" + decl.value + "'";
     }
   });
   return root;
+}
+
+function transformColor(s: string) {
+  if (!s.includes("var")) {
+    return s;
+  }
+
+  const s$1 = s.replaceAll("var(", "");
+  const s$2 = s.replaceAll(")", "");
+  const s$3 = s$2.split(",")[0];
+  const s$4 = s$3.split("-").filter((s) => Boolean(s));
+  const len = s$4.length;
+  const s$5 = [s$4[len - 4], s$4[len - 2], s$4[len - 1]].join("-");
+  return `var(--${s$5})`;
 }
 
 export function handleCss(value: string) {
