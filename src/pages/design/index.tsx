@@ -2,6 +2,7 @@ import PropertyPanel from "./PropertyPanel";
 import Panel from "./panel";
 import TreePanel from "./treePanel";
 import { atomWithReducer } from "jotai/utils";
+import { atom } from "jotai";
 
 const uuid = () => {
   return Date.now().toString(32) + Math.random().toString(16);
@@ -42,6 +43,32 @@ export const compAtom = atomWithReducer(
   },
   compReducer,
 );
+
+export const mediapointAtom = atom("xs");
+
+export const currentSelectedElementId = atom<string | null>(null);
+
+export const currentSelectedElement = atom((get) => {
+  const currentId = get(currentSelectedElementId);
+  if (!currentId) return null;
+  const page = get(compAtom);
+
+  function findById(page: any, id: string) {
+    if (page.id === id) {
+      return page;
+    }
+    const p = page.children
+      .map((child: any) => findById(child, id))
+      .filter((i: any) => i);
+    if (p.length) {
+      return p[0];
+    }
+    return false;
+  }
+
+  const ele = findById(page, currentId);
+  return ele;
+});
 
 export default function Design() {
   return (
