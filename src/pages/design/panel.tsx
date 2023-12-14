@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { compAtom } from "./atoms";
+import { IElement, compAtom } from "./atoms";
 
 export default function Panel() {
   const [page, dispatch] = useAtom(compAtom);
@@ -19,8 +19,8 @@ export default function Panel() {
 function Box(props: any) {
   return (
     <div>
-      {props?.children?.map((i) => {
-        return <Box key={i.key} {...i} />;
+      {props?.children?.map((i: IElement) => {
+        return <Box key={i.id} {...i} />;
       })}
     </div>
   );

@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { compAtom } from "./atoms";
+import { compAtom, currentSelectedElementId } from "./atoms";
 import { useState } from "react";
 
 export default function TreePanel() {
@@ -14,11 +14,18 @@ export default function TreePanel() {
 function TreeItem(comp: any) {
   const [page, dispatch] = useAtom(compAtom);
   const [coll, setColl] = useState(false);
+  const [selected, setSelected] = useAtom(currentSelectedElementId);
+
   return (
     <div className="">
       <div
-        className="flex select-none items-center bg-blue-700 p-2 text-white hover:bg-blue-800"
-        onClick={() => setColl(!coll)}
+        className={`bg-white-500 flex select-none items-center rounded-sm p-2 text-blue-600 hover:bg-blue-100 hover:text-blue-600 ${
+          selected === comp.id ? "bg-blue-600 text-white" : ""
+        }`}
+        onClick={() => {
+          setColl(!coll);
+          setSelected(comp.id);
+        }}
       >
         <div className="flex-1">{comp.name}</div>
         <div

@@ -1,28 +1,56 @@
-import Editor from "@monaco-editor/react";
 import { useAtom, useAtomValue } from "jotai";
 import { useMemo } from "react";
-import {
-  compAtom,
-  currentSelectedElement,
-  currentSelectedElementId,
-  mediapointAtom,
-} from "./atoms";
+import { compAtom, currentSelectedElement, mediapointAtom } from "./atoms";
 
 export default function PropertyPanel() {
   const currentSelected = useAtomValue(currentSelectedElement);
   const [page, dispatch] = useAtom(compAtom);
+  const mediapoint = useAtomValue(mediapointAtom);
 
   const code = useMemo(() => {
     return currentSelected;
   }, [currentSelected, page]);
 
   return (
-    <div className="basis-1/5">
+    <div className="basis-50">
       <MediaQueryTabs />
       <CSSProperty
-        code={code}
+        code={code?.[mediapoint]}
         onChange={(code: string) => {
-          console.log(code, "code");
+          dispatch({
+            type: "updateStyle",
+            payload: {
+              code: code,
+              mediapoint,
+              id: currentSelected?.id,
+            },
+          });
+        }}
+      />
+      <Content />
+    </div>
+  );
+}
+
+function Content() {
+  const [page, dispatch] = useAtom(compAtom);
+  const selected = useAtomValue(currentSelectedElement);
+
+  return (
+    <div>
+      <div className="my-5">Content</div>
+      <textarea
+        className="block h-[50px] w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+        value={selected?.content || ""}
+        onChange={(e) => {
+          const value = e.target.value;
+          dispatch({
+            type: "updateContent",
+            payload: {
+              id: selected?.id,
+              content: value,
+            },
+          });
         }}
       />
     </div>
@@ -31,13 +59,20 @@ export default function PropertyPanel() {
 
 function CSSProperty({ code, onChange }: any) {
   return (
-    <Editor
-      height="300px"
-      language="text"
-      theme="vs-dark"
-      value={code}
-      onChange={onChange}
+    <textarea
+      className="block h-[200px] w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+      value={code || ""}
+      onChange={(e) => {
+        onChange(e.target.value);
+      }}
     />
+    // <Editor
+    //   height="300px"
+    //   language="text"
+    //   theme="vs-dark"
+    //   value={code}
+    //   onChange={onChange}
+    // />
   );
 }
 
