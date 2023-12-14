@@ -40,6 +40,20 @@ export function handleCss(value: string) {
   return replaceChar(str.css);
 }
 
+export function css2js(value: string) {
+  const root = postcss.parse(value || "");
+  const cssObject: any = {};
+  root.walkDecls((decl) => {
+    const prop = transformProp(decl.prop);
+    let value = decl.value;
+    if (isNaN(Number(decl.value))) {
+      value = transformColor(decl.value);
+    }
+    cssObject[prop] = value;
+  });
+  return cssObject;
+}
+
 function replaceChar(s: string) {
   return s.replaceAll(";", ",");
 }
