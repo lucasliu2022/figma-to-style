@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { compAtom } from ".";
+import { compAtom } from "./atoms";
 
 export default function Panel() {
   const [page, dispatch] = useAtom(compAtom);

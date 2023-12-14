@@ -6,7 +6,7 @@ import {
   currentSelectedElement,
   currentSelectedElementId,
   mediapointAtom,
-} from ".";
+} from "./atoms";
 
 export default function PropertyPanel() {
   const currentSelected = useAtomValue(currentSelectedElement);

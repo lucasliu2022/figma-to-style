@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { compAtom } from ".";
+import { compAtom } from "./atoms";
 import { useState } from "react";
 
 export default function TreePanel() {
