@@ -16,9 +16,10 @@ export default function Panel() {
   );
 }
 
-function Box(props: any) {
+function Box(props: IElement) {
   return (
     <div>
+      <div>{props.content}</div>
       {props?.children?.map((i: IElement) => {
         return <Box key={i.id} {...i} />;
       })}
