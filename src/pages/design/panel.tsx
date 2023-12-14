@@ -1,3 +1,27 @@
+import { useAtom } from "jotai";
+import { compAtom } from ".";
+
 export default function Panel() {
-  return <div className="white flex-1">panel</div>;
+  const [page, dispatch] = useAtom(compAtom);
+  return (
+    <div className="white flex-1">
+      <div
+        style={{
+          all: "initial",
+        }}
+      >
+        <Box {...page} />
+      </div>
+    </div>
+  );
+}
+
+function Box(props: any) {
+  return (
+    <div>
+      {props?.children?.map((i) => {
+        return <Box key={i.key} {...i} />;
+      })}
+    </div>
+  );
 }
