@@ -40,18 +40,27 @@ export function handleCss(value: string) {
   return replaceChar(str.css);
 }
 
+export function getRandomClassName(className?: string) {
+  const random = Math.random().toString().replaceAll("0.", "");
+  return className + random;
+}
+
 export function css2js(value: string) {
-  const root = postcss.parse(value || "");
-  const cssObject: any = {};
-  root.walkDecls((decl) => {
-    const prop = transformProp(decl.prop);
-    let value = decl.value;
-    if (isNaN(Number(decl.value))) {
-      value = transformColor(decl.value);
-    }
-    cssObject[prop] = value;
-  });
-  return cssObject;
+  try {
+    const root = postcss.parse(value || "");
+    const cssObject: any = {};
+    root.walkDecls((decl) => {
+      const prop = transformProp(decl.prop);
+      let value = decl.value;
+      if (isNaN(Number(decl.value))) {
+        value = transformColor(decl.value);
+      }
+      cssObject[prop] = value;
+    });
+    return cssObject;
+  } catch (e) {
+    return {};
+  }
 }
 
 function replaceChar(s: string) {
